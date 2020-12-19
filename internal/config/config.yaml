@@ -1,0 +1,5 @@
+database:
+  user: dbuser
+  pass: dbpass
+  port: 3306
+  dbname: ent_demo
