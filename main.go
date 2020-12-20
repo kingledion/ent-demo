@@ -5,27 +5,26 @@ import (
 	"log"
 
 	"github.com/kingledion/ent-demo/internal/config"
+	"github.com/kingledion/ent-demo/internal/httpservice"
 	"github.com/kingledion/ent-demo/internal/repository"
+	"github.com/kingledion/ent-demo/internal/service"
 )
 
 func main() {
 
 	// Retrieve config settings
-	config, err := config.GetDBConfig()
+	dbConfig, err := config.GetDBConfig()
 	if err != nil {
 		log.Fatalf("cannot set up config: %v", err)
 	}
 
-	log.Printf("config settings %v", config)
+	httpConfig, err := config.GetHttpConfig()
+	if err != nil {
+		log.Fatalf("cannot set up config: %v", err)
+	}
 
 	// Open DB
-	repoconfig := repository.Config{
-		User:   config.Username,
-		Pass:   config.Password,
-		Port:   config.Port,
-		DBName: config.DBName,
-	}
-	repo, err := repository.New(repoconfig)
+	repo, err := repository.New(dbConfig)
 	if err != nil {
 		log.Fatalf("failed opening connection to db: %v", err)
 	}
@@ -36,5 +35,10 @@ func main() {
 		log.Fatalf("failed creating schema resources: %v", err)
 	}
 
+	// Launch the service
+	s := service.New(repo)
+
 	// Launch the server
+	h := httpservice.New(s)
+	httpservice.Run(h, httpConfig)
 }

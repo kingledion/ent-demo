@@ -3,3 +3,5 @@ database:
   pass: dbpass
   port: 3306
   dbname: ent_demo
+http:
+  port: 8080
