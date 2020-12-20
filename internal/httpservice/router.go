@@ -27,7 +27,7 @@ func initRoutes(h Handler) *gin.Engine {
 	router.Use(gin.Recovery())
 
 	v1 := router.Group("/v1")
-	v1.GET("/:userid/ordered-at", h.GetOrderedAtByUser)
+	v1.GET("/:userid/recommend", h.Recommend)
 	v1.POST("/order", h.AddOrder)
 
 	return router

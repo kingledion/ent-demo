@@ -50,13 +50,15 @@ func (s Service) AddOrder(ctx context.Context, order internal.Order) error {
 }
 
 // GetOrderedAtByUser returns all merchants a user ordered at
-func (s Service) GetOrderedAtByUser(ctx context.Context, userID string) ([]internal.Merchant, error) {
+func (s Service) Recommend(ctx context.Context, userID string) ([]internal.Merchant, error) {
 
 	// Get shopper with given id
 	mrchs, err := s.repo.User.
 		Query().
-		Where(user.UUIDEQ(userID)).
-		QueryOrder().
+		Where(user.UUIDEQ(userID)). // get user
+		QueryOrder().               // get all merchants ordered at
+		QueryMOrder().              // get all shoppers who ordered at merchants
+		QueryOrder().               // get all merchants those shoppers ordered at
 		All(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed querying merchants: %v", err)

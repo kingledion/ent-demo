@@ -54,8 +54,8 @@ func (h *Handler) AddOrder(c *gin.Context) {
 	return
 }
 
-func (h *Handler) GetOrderedAtByUser(c *gin.Context) {
-	// swagger:route Get /v1/:userid/orders order addorder
+func (h *Handler) Recommend(c *gin.Context) {
+	// swagger:route GET /v1/:userid/recommend order addorder
 	//
 	// Get all orders made by a user
 	//
@@ -70,7 +70,7 @@ func (h *Handler) GetOrderedAtByUser(c *gin.Context) {
 
 	// check if UUID is valid
 
-	merchants, err := h.service.GetOrderedAtByUser(c, uid)
+	merchants, err := h.service.Recommend(c, uid)
 	if err != nil {
 		log.Printf("Could not process request: %v", err)
 		c.Abort()
