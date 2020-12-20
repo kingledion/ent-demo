@@ -14,4 +14,29 @@ database:
   pass: dbpass
   port: 3306
   dbname: ent_demo
+http:
+  port: 8080
+
   ```
+
+## Running
+
+Run the executable with `go run main.go`
+
+To create an order, POST to `localhost:8080/v1/order` with
+
+```
+{
+    "user": {
+        "uuid": "123-456",
+        "firstname": "Bilbo",
+        "lastname": "Baggins"
+    },
+    "merchant": {
+        "uuid": "980-733",
+        "dba": "Bag End Pipes & Weed"
+    }
+}
+```
+
+Retrieve a recommendation by GET to `localhost:8080/v1/123-456/recommend`
